@@ -205,18 +205,42 @@ function App() {
     setInput("");
     setThinking(true);
 
-    // Flexible keyword detection: a group matches when ALL its terms appear.
+    // 1) Developer detection: a group matches when ALL its terms appear.
     // e.g. "who developed this?" or "ใครเป็นคนสร้างระบบนี้" → A70III + GitHub.
     const low = text.toLowerCase();
     const matched = t.detectGroups.some((group) =>
       group.every((term) => low.includes(term.toLowerCase())),
     );
-    const answer = matched
-      ? t.detectAnswer
-      : t.sampleAnswers[Math.floor(Math.random() * t.sampleAnswers.length)];
-    const link = matched
-      ? { label: t.githubLabel, url: "https://github.com/A70III" }
-      : undefined;
+
+    // 2) Keyword matcher:
+    //    - ASCII terms (hello, test) match only as whole words,
+    //      so "latest" doesn't count as "test".
+    //    - Thai terms (สวัสดี, ทดสอบ) match as substrings,
+    //      so "สวัสดีครับ" still works.
+    const hasAny = (terms: string[]) =>
+      terms.some((g) => {
+        const term = g.toLowerCase();
+        return /^\p{ASCII}+$/u.test(term)
+          ? new RegExp(`\\b${term}\\b`).test(low)
+          : low.includes(term);
+      });
+    const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+
+    const isGreeting = hasAny(t.greetTriggers);
+    const isTest = hasAny(t.testTriggers);
+
+    let answer: string;
+    let link: { label: string; url: string } | undefined;
+    if (matched) {
+      answer = t.detectAnswer;
+      link = { label: t.githubLabel, url: "https://github.com/A70III" };
+    } else if (isGreeting) {
+      answer = pick(t.greetAnswers);
+    } else if (isTest) {
+      answer = pick(t.testAnswers);
+    } else {
+      answer = pick(t.sampleAnswers);
+    }
     window.setTimeout(() => {
       setThinking(false);
       const msgId = nextMsgId++;
