@@ -85,6 +85,32 @@ const LEGACY_TRIGGERS = [
   "legacy.kyrin.dev",
 ];
 
+// Shared developer-detection groups — language-independent (Thai + English),
+// so "ใครพัฒนา" works in an English UI and "who developed" works in a Thai UI.
+const DETECT_GROUPS: string[][] = [
+  ["ใคร", "พัฒนา"],
+  ["ใคร", "สร้าง"],
+  ["ใคร", "เขียน"],
+  ["ใคร", "ทำ"],
+  ["ใคร", "คิดค้น"],
+  ["ใคร", "ออกแบบ"],
+  ["ใคร", "ดูแล"],
+  ["ผู้พัฒนา"],
+  ["พัฒนาโดยใคร"],
+  ["สร้างโดยใคร"],
+  ["who", "develop"],
+  ["who", "made"],
+  ["who", "make"],
+  ["who", "created"],
+  ["who", "built"],
+  ["who", "wrote"],
+  ["who", "design"],
+  ["developer"],
+  ["created by"],
+  ["built by"],
+  ["made by"],
+];
+
 export const i18n: Record<Lang, Dict> = {
   th: {
     tagline: "Research OS",
@@ -100,18 +126,7 @@ export const i18n: Record<Lang, Dict> = {
       "จากไฟล์ kyrin-paper.pdf: ตรวจพบเอกสาร 24 หน้า พร้อม metadata ครบถ้วน, citation 47 รายการ และสร้าง knowledge graph จากเอกสารของคุณเรียบร้อยแล้ว — พร้อมถามเชิงลึกต่อได้เลยค่ะ",
     removeFile: "ลบไฟล์",
     citationLabel: "อ้างอิง",
-    detectGroups: [
-      ["ใคร", "พัฒนา"],
-      ["ใคร", "สร้าง"],
-      ["ใคร", "เขียน"],
-      ["ใคร", "ทำ"],
-      ["ใคร", "คิดค้น"],
-      ["ใคร", "ออกแบบ"],
-      ["ใคร", "ดูแล"],
-      ["ผู้พัฒนา"],
-      ["พัฒนาโดยใคร"],
-      ["สร้างโดยใคร"],
-    ],
+    detectGroups: DETECT_GROUPS,
     detectAnswer: "ระบบนี้พัฒนาโดย A70III ค่ะ — ติดตามผลงานและโค้ดได้ที่ GitHub",
     githubLabel: "GitHub",
     sampleAnswers: [
@@ -151,19 +166,7 @@ export const i18n: Record<Lang, Dict> = {
       "From kyrin-paper.pdf: found a 24-page document with complete metadata, 47 citations, and a knowledge graph built from your papers — ready for deep Q&A",
     removeFile: "Remove file",
     citationLabel: "Citation",
-    detectGroups: [
-      ["who", "develop"],
-      ["who", "made"],
-      ["who", "make"],
-      ["who", "created"],
-      ["who", "built"],
-      ["who", "wrote"],
-      ["who", "design"],
-      ["developer"],
-      ["created by"],
-      ["built by"],
-      ["made by"],
-    ],
+    detectGroups: DETECT_GROUPS,
     detectAnswer: "This system was developed by A70III — check out the work on GitHub",
     githubLabel: "GitHub",
     sampleAnswers: [
