@@ -17,6 +17,10 @@ export interface Dict {
   detectAnswer: string;
   githubLabel: string;
   sampleAnswers: string[];
+  greetTriggers: string[];
+  greetAnswers: string[];
+  testTriggers: string[];
+  testAnswers: string[];
   langLabel: string;
   themeLight: string;
   themeDark: string;
@@ -56,6 +60,16 @@ export const i18n: Record<Lang, Dict> = {
       "เจอแหล่งอ้างอิงที่ตรงกับคำถามแล้ว กำลังจัดระเบียบคำตอบ",
       "นี่คือคำตอบที่อ้างอิงจากเอกสารในคลังของคุณเอง",
     ],
+    greetTriggers: ["สวัสดี", "หวัดดี", "hello", "hi", "hey"],
+    greetAnswers: [
+      "สวัสดีครับ! ยินดีต้อนรับสู่ Kyrin Research OS — มีอะไรให้ช่วยไหมครับ?",
+      "สวัสดีครับ! พร้อมช่วยค้นคว้าเอกสารให้คุณแล้ว — ถามอะไรก็ได้เลยครับ",
+    ],
+    testTriggers: ["ทดสอบ", "เทส", "test", "testing"],
+    testAnswers: [
+      "รับทราบครับ ทดสอบสำเร็จ! ระบบ Kyrin ทำงานปกติ พร้อมให้บริการ",
+      "ระบบพร้อมใช้งานครับ! ข้อความของคุณมาถึงเรียบร้อย — ถามอะไรเพิ่มเติมได้เลย",
+    ],
     langLabel: "ภาษา",
     themeLight: "โหมดสว่าง",
     themeDark: "โหมดมืด",
@@ -93,6 +107,16 @@ export const i18n: Record<Lang, Dict> = {
       "Gathering evidence from your documents — summarising it for you now",
       "Found matching sources in your library, putting the answer together",
       "Here's an answer backed by citations from your own documents",
+    ],
+    greetTriggers: ["hello", "hi", "hey"],
+    greetAnswers: [
+      "Hi there! Welcome to Kyrin Research OS — how can I help you today?",
+      "Hello! Ready to dig into your documents — ask me anything",
+    ],
+    testTriggers: ["test", "testing"],
+    testAnswers: [
+      "Got it — test successful! Kyrin is running normally and ready to help",
+      "System is up and running! Your message came through — ask me anything else",
     ],
     langLabel: "Language",
     themeLight: "Light mode",
