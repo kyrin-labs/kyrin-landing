@@ -15,14 +15,14 @@
 }
 
 [data-theme="dark"] {
-  --bg: #0d0d10;
+  --bg: #15151b;
   --text: #f2f2f5;
   --muted: #b5b5bd;
-  --card: #1b1b21;
+  --card: #1f1f26;
   --border: rgba(255, 255, 255, 0.18);
   --input-bg: rgba(255, 255, 255, 0.1);
   --bubble-user: rgba(255, 255, 255, 0.16);
-  --bubble-ai: #1b1b21;
+  --bubble-ai: #1f1f26;
   --wordmark: linear-gradient(135deg, #ffffff 35%, #ececf1 60%, rgba(236, 236, 241, 0.55));
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.32);
   --focus-border: rgba(255, 255, 255, 0.55);
