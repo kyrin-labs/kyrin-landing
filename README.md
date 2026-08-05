@@ -23,10 +23,25 @@ npm run build    # production build -> dist/
 ## Deploy
 
 ```bash
+npm run build
 wrangler deploy          # uploads ./dist as static assets to the kyrin-landing Worker
 ```
 
-The Worker route `kyrin.dev/*` is attached on the `kyrin.dev` zone.
+The Worker route `kyrin.dev/*` is declared in `wrangler.toml` and attached on the `kyrin.dev` zone.
+
+## CI/CD — auto-deploy on commit
+
+Pushing to `main` triggers [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds the site and deploys it to Cloudflare automatically.
+
+To make CI work you need a Cloudflare API token stored as a GitHub secret:
+
+1. Create a token at https://dash.cloudflare.com/profile/api-tokens with:
+   - **Account · Workers Scripts — Edit**
+   - **Account · Workers Routes — Edit**
+   - **Account · Account Settings — Read**
+2. Add it to the repo: `gh secret set CLOUDFLARE_API_TOKEN` (or Settings → Secrets and variables → Actions in the GitHub UI).
+
+Deploys are sequential (no overlapping runs); a failed deploy never cancels a running one.
 
 ## Content
 
