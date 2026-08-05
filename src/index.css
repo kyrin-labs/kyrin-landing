@@ -282,6 +282,13 @@ img { display: block; }
   border-style: dashed;
 }
 
+/* row of link chips (e.g. GitHub + legacy site) */
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 /* ============ Input ============ */
 .chat-input {
   display: flex;

@@ -7,6 +7,7 @@ import {
 } from "react";
 import {
   FileText,
+  Globe,
   Moon,
   Paperclip,
   SendHorizontal,
@@ -22,7 +23,7 @@ type Msg = {
   text: string;
   file?: string;
   cite?: string;
-  link?: { label: string; url: string };
+  links?: { label: string; url: string }[];
 };
 
 let nextMsgId = 1;
@@ -205,35 +206,60 @@ function App() {
     setInput("");
     setThinking(true);
 
-    // 1) Developer detection: a group matches when ALL its terms appear.
-    // e.g. "who developed this?" or "ใครเป็นคนสร้างระบบนี้" → A70III + GitHub.
-    const low = text.toLowerCase();
-    const matched = t.detectGroups.some((group) =>
-      group.every((term) => low.includes(term.toLowerCase())),
-    );
+    // 1) Normalize the message: lowercase + strip punctuation and Thai
+    //    politeness particles, so "สวัสดีครับ" → "สวัสดี".
+    const normalize = (s: string) =>
+      s
+        .toLowerCase()
+        .replace(
+          /[\s.,!?;:'"()[\]{}<>/\\|`~@#$%^&*+=_\-…“”‘’ครับค่ะจ้าเนอะนะจ๊ะคะฮะอ่ะล่ะเหอะเถอะ]+/g,
+          " ",
+        )
+        .replace(/\s+/g, " ")
+        .trim();
+    const norm = normalize(text);
 
-    // 2) Keyword matcher:
-    //    - ASCII terms (hello, test) match only as whole words,
-    //      so "latest" doesn't count as "test".
-    //    - Thai terms (สวัสดี, ทดสอบ) match as substrings,
-    //      so "สวัสดีครับ" still works.
-    const hasAny = (terms: string[]) =>
-      terms.some((g) => {
-        const term = g.toLowerCase();
-        return /^\p{ASCII}+$/u.test(term)
-          ? new RegExp(`\\b${term}\\b`).test(low)
-          : low.includes(term);
-      });
+    // 2) Flexible matcher — a phrase matches when ALL its words appear in
+    //    the message, in any order:
+    //    - ASCII words match as whole words and tolerate simple
+    //      inflections ("test" → "testing", "develop" → "developer").
+    //    - Thai words match as substrings.
+    const matches = (phrase: string) => {
+      const tokens = normalize(phrase).split(" ").filter(Boolean);
+      return (
+        tokens.length > 0 &&
+        tokens.every((tok) =>
+          /^\p{ASCII}+$/u.test(tok)
+            ? new RegExp(
+                `\\b${tok.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}${
+                  tok.length >= 4 ? "\\w*" : ""
+                }\\b`,
+                "u",
+              ).test(norm)
+            : norm.includes(tok),
+        )
+      );
+    };
+    const anyOf = (phrases: string[]) => phrases.some(matches);
     const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
 
-    const isGreeting = hasAny(t.greetTriggers);
-    const isTest = hasAny(t.testTriggers);
+    // 3) Category detection (each group needs ALL its terms).
+    const matched = t.detectGroups.some((group) => group.every(matches));
+    const isGreeting = anyOf(t.greetTriggers);
+    const isTest = anyOf(t.testTriggers);
+    const isLegacy = anyOf(t.legacyTerms);
 
     let answer: string;
-    let link: { label: string; url: string } | undefined;
+    let links: { label: string; url: string }[] | undefined;
     if (matched) {
       answer = t.detectAnswer;
-      link = { label: t.githubLabel, url: "https://github.com/A70III" };
+      links = [{ label: t.githubLabel, url: "https://github.com/A70III" }];
+    } else if (isLegacy) {
+      answer = t.legacyAnswer;
+      links = [
+        { label: t.githubLabel, url: "https://github.com/kyrin-labs" },
+        { label: t.legacySiteLabel, url: "https://legacy.kyrin.dev" },
+      ];
     } else if (isGreeting) {
       answer = pick(t.greetAnswers);
     } else if (isTest) {
@@ -246,7 +272,7 @@ function App() {
       const msgId = nextMsgId++;
       setMessages((m) => [
         ...m,
-        { id: msgId, role: "ai", text: "", link },
+        { id: msgId, role: "ai", text: "", links },
       ]);
       let i = 0;
       const iv = window.setInterval(() => {
@@ -326,16 +352,21 @@ function App() {
                       </span>
                     </div>
                   )}
-                  {m.link && (
-                    <a
-                      className="file-chip link"
-                      href={m.link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <GithubIcon size={12} />
-                      <span>{m.link.label}</span>
-                    </a>
+                  {m.links && m.links.length > 0 && (
+                    <div className="link-row">
+                      {m.links.map((l) => (
+                        <a
+                          key={l.url}
+                          className="file-chip link"
+                          href={l.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Globe size={12} />
+                          <span>{l.label}</span>
+                        </a>
+                      ))}
+                    </div>
                   )}
                 </div>
               </div>

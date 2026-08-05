@@ -21,10 +21,69 @@ export interface Dict {
   greetAnswers: string[];
   testTriggers: string[];
   testAnswers: string[];
+  legacyTerms: string[];
+  legacyAnswer: string;
+  legacySiteLabel: string;
   langLabel: string;
   themeLight: string;
   themeDark: string;
 }
+
+// Shared trigger keywords — language-independent, because users type mixed
+// Thai/English (e.g. "kyrin package อ่ะ?"). Detection logic lives in App.tsx
+// (flexible token matcher: any word order, inflection-tolerant).
+const GREET_TRIGGERS = [
+  "สวัสดี",
+  "หวัดดี",
+  "สวัสดีจ้า",
+  "ฮัลโหล",
+  "ทักทาย",
+  "hello",
+  "hi",
+  "hey",
+  "yo",
+  "good morning",
+  "good afternoon",
+  "good evening",
+  "howdy",
+];
+
+const TEST_TRIGGERS = [
+  "ทดสอบ",
+  "เทส",
+  "test",
+  "testing",
+  "ลองระบบ",
+  "ลองใช้งาน",
+  "check",
+  "ping",
+  "run a test",
+];
+
+const LEGACY_TRIGGERS = [
+  "kyrin เดิม",
+  "kyrin เก่า",
+  "kyrin รุ่นเก่า",
+  "kyrin version เก่า",
+  "kyrin เวอร์ชันเก่า",
+  "kyrin v1",
+  "original kyrin",
+  "old kyrin",
+  "kyrin framework",
+  "framework kyrin",
+  "kyrin npm",
+  "npm kyrin",
+  "npm package kyrin",
+  "kyrin package",
+  "package kyrin",
+  "แพ็กเกจ kyrin",
+  "kyrin แพ็กเกจ",
+  "ไลบรารี kyrin",
+  "library kyrin",
+  "legacy kyrin",
+  "kyrin legacy",
+  "legacy.kyrin.dev",
+];
 
 export const i18n: Record<Lang, Dict> = {
   th: {
@@ -60,16 +119,20 @@ export const i18n: Record<Lang, Dict> = {
       "เจอแหล่งอ้างอิงที่ตรงกับคำถามแล้ว กำลังจัดระเบียบคำตอบ",
       "นี่คือคำตอบที่อ้างอิงจากเอกสารในคลังของคุณเอง",
     ],
-    greetTriggers: ["สวัสดี", "หวัดดี", "hello", "hi", "hey"],
+    greetTriggers: GREET_TRIGGERS,
     greetAnswers: [
       "สวัสดีครับ! ยินดีต้อนรับสู่ Kyrin Research OS — มีอะไรให้ช่วยไหมครับ?",
       "สวัสดีครับ! พร้อมช่วยค้นคว้าเอกสารให้คุณแล้ว — ถามอะไรก็ได้เลยครับ",
     ],
-    testTriggers: ["ทดสอบ", "เทส", "test", "testing"],
+    testTriggers: TEST_TRIGGERS,
     testAnswers: [
       "รับทราบครับ ทดสอบสำเร็จ! ระบบ Kyrin ทำงานปกติ พร้อมให้บริการ",
       "ระบบพร้อมใช้งานครับ! ข้อความของคุณมาถึงเรียบร้อย — ถามอะไรเพิ่มเติมได้เลย",
     ],
+    legacyTerms: LEGACY_TRIGGERS,
+    legacyAnswer:
+      "Kyrin เวอร์ชันเดิม (framework / npm package) เป็นโปรเจกต์ที่หยุดพัฒนาแล้ว แต่ยังเข้าถึงเอกสารเก่าได้ผ่าน GitHub ของ kyrin-labs และเว็บไซต์ legacy.kyrin.dev",
+    legacySiteLabel: "legacy.kyrin.dev",
     langLabel: "ภาษา",
     themeLight: "โหมดสว่าง",
     themeDark: "โหมดมืด",
@@ -108,16 +171,20 @@ export const i18n: Record<Lang, Dict> = {
       "Found matching sources in your library, putting the answer together",
       "Here's an answer backed by citations from your own documents",
     ],
-    greetTriggers: ["hello", "hi", "hey"],
+    greetTriggers: GREET_TRIGGERS,
     greetAnswers: [
       "Hi there! Welcome to Kyrin Research OS — how can I help you today?",
       "Hello! Ready to dig into your documents — ask me anything",
     ],
-    testTriggers: ["test", "testing"],
+    testTriggers: TEST_TRIGGERS,
     testAnswers: [
       "Got it — test successful! Kyrin is running normally and ready to help",
       "System is up and running! Your message came through — ask me anything else",
     ],
+    legacyTerms: LEGACY_TRIGGERS,
+    legacyAnswer:
+      "The original Kyrin (framework / npm package) is no longer under active development, but you can still access the old documentation via the kyrin-labs GitHub and legacy.kyrin.dev",
+    legacySiteLabel: "legacy.kyrin.dev",
     langLabel: "Language",
     themeLight: "Light mode",
     themeDark: "Dark mode",
