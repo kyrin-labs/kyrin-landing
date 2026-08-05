@@ -2,7 +2,7 @@
 :root {
   --bg: #ffffff;
   --text: #1c1c1e;
-  --muted: #5f5f66;
+  --muted: #57575e;
   --card: #ffffff;
   --border: rgba(0, 0, 0, 0.1);
   --input-bg: rgba(0, 0, 0, 0.04);
@@ -371,6 +371,15 @@ img { display: block; }
   transition: opacity 0.15s, transform 0.15s;
 }
 .chip-btn:hover { opacity: 1; transform: translateY(-1px); }
+
+/* ============ Light-theme readability lifts (WCAG AA) ============ */
+/* Secondary text in light mode needs higher opacity than dark to stay
+   >= 4.5:1 with the muted token; dark mode keeps its own values. */
+[data-theme="light"] .wordmark-sub { opacity: 0.95; }
+[data-theme="light"] .msg-label { opacity: 0.95; }
+[data-theme="light"] .chat-input textarea::placeholder { opacity: 0.9; }
+[data-theme="light"] .icon-btn { opacity: 0.9; }
+[data-theme="light"] .chip-btn { opacity: 1; }
 
 /* ============ Animations ============ */
 @keyframes rise-in {
