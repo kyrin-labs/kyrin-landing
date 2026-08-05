@@ -2,3 +2,8 @@ name = "kyrin-landing"
 main = "src/worker.js"
 assets = { directory = "./dist", not_found_handling = "single-page-application" }
 compatibility_date = "2025-01-01"
+account_id = "536a3e7b566a3521497522027f6802b2"
+
+routes = [
+  { pattern = "kyrin.dev/*", zone_name = "kyrin.dev" }
+]
