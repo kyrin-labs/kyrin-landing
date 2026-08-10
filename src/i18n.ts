@@ -24,6 +24,7 @@ export interface Dict {
   legacyTerms: string[];
   legacyAnswer: string;
   legacySiteLabel: string;
+  legacyBtnLabel: string;
   langLabel: string;
   themeLight: string;
   themeDark: string;
@@ -148,6 +149,7 @@ export const i18n: Record<Lang, Dict> = {
     legacyAnswer:
       "Kyrin เวอร์ชันเดิม (framework / npm package) เป็นโปรเจกต์ที่หยุดพัฒนาแล้ว แต่ยังเข้าถึงเอกสารเก่าได้ผ่าน GitHub ของ kyrin-labs และเว็บไซต์ legacy.kyrin.dev",
     legacySiteLabel: "legacy.kyrin.dev",
+    legacyBtnLabel: "Kyrin เวอร์ชันเดิม",
     langLabel: "ภาษา",
     themeLight: "โหมดสว่าง",
     themeDark: "โหมดมืด",
@@ -188,6 +190,7 @@ export const i18n: Record<Lang, Dict> = {
     legacyAnswer:
       "The original Kyrin (framework / npm package) is no longer under active development, but you can still access the old documentation via the kyrin-labs GitHub and legacy.kyrin.dev",
     legacySiteLabel: "legacy.kyrin.dev",
+    legacyBtnLabel: "Legacy site",
     langLabel: "Language",
     themeLight: "Light mode",
     themeDark: "Dark mode",

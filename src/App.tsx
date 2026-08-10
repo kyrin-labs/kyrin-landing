@@ -8,6 +8,7 @@ import {
 import {
   FileText,
   Globe,
+  History,
   Moon,
   Paperclip,
   SendHorizontal,
@@ -304,6 +305,15 @@ function App() {
         >
           {theme === "light" ? <Moon size={13} /> : <Sun size={13} />}
         </button>
+        <a
+          className="chip-btn"
+          href="https://legacy.kyrin.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          title={t.legacyBtnLabel}
+        >
+          <History size={13} />
+        </a>
         <a
           className="chip-btn"
           href="https://github.com/kyrin-labs"
